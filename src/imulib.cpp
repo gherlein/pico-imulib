@@ -5,20 +5,10 @@
 #include <bno055_imu.h>
 #include <bno085_imu.h>
 
-#ifdef MAIN
-int main()
+void run_bno085(i2c_inst_t *i2c)
 {
-    stdio_init_all();
-    sleep_ms(5000);
-    run_bno085();
-    // run_bno055();
-    // run_hmc58883l();
-}
-#endif
-
-void run_bno085()
-{
-    imu::bno85 imu(16, 17);
+    // imu::bno85 imu(16, 17);
+    imu::bno85 imu(i2c);
     auto rc = imu.init_i2c_hal();
     if (!rc)
         return;
@@ -40,6 +30,7 @@ void run_bno085()
     }
 }
 
+#ifdef OLD
 void run_bno055()
 {
     imu::bno55 imu(16, 17);
@@ -61,3 +52,4 @@ void run_bno055()
         sleep_ms(100);
     }
 }
+#endif

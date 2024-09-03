@@ -5,12 +5,16 @@
 
 extern "C"
 {
+#include "hardware/gpio.h"
+#include "hardware/i2c.h"
+#include "pico/binary_info.h"
+#include "pico/stdlib.h"
 #include <sh2_err.h>
 #include <sh2_SensorValue.h>
 #include "bno055.h"
 }
 
-void run_bno085();
+void run_bno085(i2c_inst_t *i2c);
 
 namespace imu
 {
@@ -31,25 +35,31 @@ namespace imu
     int i2c_write(sh2_Hal_t *self, uint8_t *buffer, unsigned len);
     int i2c_read(sh2_Hal_t *self, uint8_t *buffer, unsigned len, uint32_t *t_us);
 
+    i2c_inst_t *i2cX;
+
     struct bno85
     {
 
         sh2_Hal_t _sh2_hal;
         sh2_ProductIds_t _prodIds;
 
-        bno85(int sda, int scl, uint freq = 400 * 1000)
+        // bno85(int sda, int scl, uint freq = 400 * 1000)
+        bno85(i2c_inst_t *i2c)
         {
+            i2cX = i2c;
+#ifdef OLD
             i2c_init(i2c0, freq);
             gpio_set_function(sda, GPIO_FUNC_I2C);
             gpio_set_function(scl, GPIO_FUNC_I2C);
             gpio_pull_up(sda);
             gpio_pull_up(scl);
+#endif
         }
 
         bool init_i2c_hal()
         {
             uint8_t dummy;
-            auto rc = i2c_read_blocking(i2c0, BNO085_I2C_ADDR, &dummy, 1, false);
+            auto rc = i2c_read_blocking(i2cX, BNO085_I2C_ADDR, &dummy, 1, false);
             if (rc < 1)
             {
                 std::cout << "i2c_read_blocking dummy test failed" << std::endl;
@@ -155,7 +165,7 @@ namespace imu
         uint8_t soft_reset_pkt[5] = {5, 0, 1, 0, 1};
         for (int i = 0; i < 5; i++)
         {
-            auto rc = i2c_write_blocking(i2c0, BNO085_I2C_ADDR, soft_reset_pkt, 5, false);
+            auto rc = i2c_write_blocking(i2cX, BNO085_I2C_ADDR, soft_reset_pkt, 5, false);
             if (rc == 5)
             {
                 return true;
@@ -237,7 +247,7 @@ namespace imu
     {
         *t_us = to_us_since_boot(get_absolute_time());
         uint8_t shtp_header[4]; // DS: 1.3.1 SHTP
-        auto rc = i2c_read_blocking(i2c0, BNO085_I2C_ADDR, shtp_header, 4, false);
+        auto rc = i2c_read_blocking(i2cX, BNO085_I2C_ADDR, shtp_header, 4, false);
         if (rc != 4)
         {
             std::cout << "i2c_read shtp_header: " << rc << std::endl;
@@ -255,7 +265,7 @@ namespace imu
             std::cout << "i2c_read shtp_header length " << length << ", len " << len << std::endl;
             return 0;
         }
-        rc = i2c_read_blocking(i2c0, BNO085_I2C_ADDR, buffer, length, false);
+        rc = i2c_read_blocking(i2cX, BNO085_I2C_ADDR, buffer, length, false);
         if (rc != length)
         {
             std::cout << "i2c_read_blocking buffer rc " << rc << ", length " << length << std::endl;
@@ -267,7 +277,7 @@ namespace imu
     inline int i2c_write(sh2_Hal_t *self, uint8_t *buffer, unsigned len)
     {
         uint16_t length = (len > SH2_HAL_MAX_TRANSFER_OUT) ? SH2_HAL_MAX_TRANSFER_OUT : len;
-        auto rc = i2c_write_blocking(i2c0, BNO085_I2C_ADDR, buffer, length, false);
+        auto rc = i2c_write_blocking(i2cX, BNO085_I2C_ADDR, buffer, length, false);
         // std::cout << "i2c_write " << rc << std::endl;
         if (rc != length)
             return 0;
@@ -278,7 +288,6 @@ namespace imu
     {
         return to_us_since_boot(get_absolute_time());
     }
-
 }
 
 #endif
