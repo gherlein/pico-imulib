@@ -2,8 +2,8 @@
 #include <iomanip>
 #include <iostream>
 
-#include <bno055.h>
-#include <bno085.h>
+#include <bno055_imu.h>
+#include <bno085_imu.h>
 
 #ifdef MAIN
 int main()

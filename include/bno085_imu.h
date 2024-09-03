@@ -5,8 +5,8 @@
 
 extern "C"
 {
-#include <sh2/sh2_err.h>
-#include <sh2/sh2_SensorValue.h>
+#include <sh2_err.h>
+#include <sh2_SensorValue.h>
 #include "bno055.h"
 }
 

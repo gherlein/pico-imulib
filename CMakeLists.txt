@@ -18,8 +18,9 @@ add_library(imulib
 
 target_include_directories(imulib PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        src
+        include
         sh2
+        src
         # add other folders as needed
 )
 
