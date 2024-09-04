@@ -2,7 +2,7 @@
 #define BNO85_H
 
 #include <iostream>
-
+#include <cstring>
 extern "C"
 {
 #include "hardware/gpio.h"
