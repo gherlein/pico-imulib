@@ -11,7 +11,6 @@ file(GLOB_RECURSE SH2 RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "sh2/*.[ch]")
 
 pico_sdk_init()
 add_library(pico-imulib
-    src/imulib.cpp
     ${SOURCES}
     ${SH2}
 )
