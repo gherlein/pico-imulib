@@ -1,4 +1,4 @@
-# Install script for directory: /home/gherlein/pico/pico/pico-sdk/src/common/hardware_claim
+# Install script for directory: /home/gherlein/src/pico/pico-sdk/src/common/hardware_claim
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

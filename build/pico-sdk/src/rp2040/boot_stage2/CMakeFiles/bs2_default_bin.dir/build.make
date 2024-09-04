@@ -86,6 +86,6 @@ pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/clean:
 .PHONY : pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/clean
 
 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/depend:
-	cd /home/gherlein/src/pico-projects/pico-imulib2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/gherlein/src/pico-projects/pico-imulib2 /home/gherlein/pico/pico/pico-sdk/src/rp2040/boot_stage2 /home/gherlein/src/pico-projects/pico-imulib2/build /home/gherlein/src/pico-projects/pico-imulib2/build/pico-sdk/src/rp2040/boot_stage2 /home/gherlein/src/pico-projects/pico-imulib2/build/pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/gherlein/src/pico-projects/pico-imulib2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/gherlein/src/pico-projects/pico-imulib2 /home/gherlein/src/pico/pico-sdk/src/rp2040/boot_stage2 /home/gherlein/src/pico-projects/pico-imulib2/build /home/gherlein/src/pico-projects/pico-imulib2/build/pico-sdk/src/rp2040/boot_stage2 /home/gherlein/src/pico-projects/pico-imulib2/build/pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/depend
 

@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "/home/gherlein/pico/pico/pico-sdk/tools/pioasm"
+  "/home/gherlein/src/pico/pico-sdk/tools/pioasm"
   "/home/gherlein/src/pico-projects/pico-imulib2/build/pioasm"
   "/home/gherlein/src/pico-projects/pico-imulib2/build/pioasm-install"
   "/home/gherlein/src/pico-projects/pico-imulib2/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp"

@@ -1,4 +1,4 @@
-# Install script for directory: /home/gherlein/pico/pico/pico-sdk/src
+# Install script for directory: /home/gherlein/src/pico/pico-sdk/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
