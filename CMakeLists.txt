@@ -20,13 +20,11 @@ target_include_directories(pico-imulib PRIVATE
         include
         sh2
         src
-        # add other folders as needed
 )
 
 target_link_libraries(pico-imulib
 	pico_stdlib
     hardware_irq
     hardware_i2c
-	# other libs as needed
 )
 
