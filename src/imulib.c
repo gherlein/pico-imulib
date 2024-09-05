@@ -19,13 +19,17 @@ void run_bno085(i2c_inst_t *i2c)
         return;
     rc = enableCalibration();
     if (!rc)
+    {
         return;
+        printf("failed calibration\n");
+    }
     while (true)
     {
         sleep_ms(100);
         sh2_service();
         if (hasReset())
         {
+            printf("detected reset - redoing calibration\n");
             enableCalibration();
             enableReports();
         }

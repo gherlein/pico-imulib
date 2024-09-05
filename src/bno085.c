@@ -55,10 +55,10 @@ bool init_i2c_hal(i2c_inst_t *i2c)
 	int status = sh2_open(&sh2_hal, hal_callback, NULL);
 	if (status != SH2_OK)
 	{
-
 		printf("sh2_open failed\n");
 		return false;
 	}
+	sleep_ms(25);
 	memset(&prodIds, 0, sizeof(prodIds));
 	status = sh2_getProdIds(&prodIds);
 	if (status != SH2_OK)
@@ -71,7 +71,7 @@ bool init_i2c_hal(i2c_inst_t *i2c)
 		printf("Part: %d %d\n", prodIds.entry[n], prodIds.entry[n].swPartNumber);
 		printf("Version: %d.%d.%d\n", prodIds.entry[n].swVersionMajor,
 			   prodIds.entry[n].swVersionMinor, prodIds.entry[n].swVersionPatch);
-		printf("Build: %n", prodIds.entry[n].swBuildNumber);
+		printf("Build: %d\n", prodIds.entry[n].swBuildNumber);
 	}
 	status = sh2_setSensorCallback(sensorHandler, NULL);
 	if (status != SH2_OK)
@@ -85,7 +85,7 @@ bool init_i2c_hal(i2c_inst_t *i2c)
 bool enableCalibration(void)
 {
 	int status = sh2_setCalConfig(SH2_CAL_ACCEL | SH2_CAL_GYRO | SH2_CAL_MAG);
-	printf("sh2_setCalConfig %n", status);
+	// printf("sh2_setCalConfig %n", status);
 	return (status == SH2_OK);
 }
 
@@ -192,7 +192,8 @@ void sensorHandler(void *cookie, sh2_SensorEvent_t *event)
 	// expressed as a quaternion referenced to magnetic north and gravity
 	// game rotation vector output aligns the quaternion output to an arbitrary orientation
 	case SH2_ROTATION_VECTOR:
-		printf("{%f %f %f %f}\n", sensor_value.un.rotationVector.i,
+		absolute_time_t t = get_absolute_time();
+		printf("{%ld %f %f %f %f}\n", t, sensor_value.un.rotationVector.i,
 			   sensor_value.un.rotationVector.j,
 			   sensor_value.un.rotationVector.k,
 			   sensor_value.un.rotationVector.real);
@@ -235,12 +236,14 @@ void i2c_close(sh2_Hal_t *self)
 
 int i2c_read(sh2_Hal_t *self, uint8_t *buffer, unsigned len, uint32_t *t_us)
 {
+	// printf("i2c_read %d\n", len);
 	*t_us = to_us_since_boot(get_absolute_time());
 	uint8_t shtp_header[4]; // DS: 1.3.1 SHTP
+	sleep_ms(5);
 	int rc = i2c_read_blocking(i2cX, BNO085_I2C_ADDR, shtp_header, 4, false);
 	if (rc != 4)
 	{
-		printf("i2c_read shtp_header: %d\n", rc);
+		// printf("i2c_read shtp_header: %d\n", rc);
 		return 0;
 	}
 	uint16_t length = (shtp_header[1] << 8) | shtp_header[0];
@@ -252,13 +255,13 @@ int i2c_read(sh2_Hal_t *self, uint8_t *buffer, unsigned len, uint32_t *t_us)
 	// DEBUG_PRINT("length %d\r\n", length);
 	if (length > len)
 	{
-		printf("i2c_read shtp_header length %d\n", length);
+		// printf("i2c_read shtp_header length %d\n", length);
 		return 0;
 	}
 	rc = i2c_read_blocking(i2cX, BNO085_I2C_ADDR, buffer, length, false);
 	if (rc != length)
 	{
-		printf("i2c_read_blocking buffer rc %d", length);
+		// printf("i2c_read_blocking buffer rc %d", length);
 		return 0;
 	}
 	return length;
