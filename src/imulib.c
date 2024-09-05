@@ -11,7 +11,7 @@
 
 void run_bno085(i2c_inst_t *i2c)
 {
-    int rc = init_i2c_hal();
+    int rc = init_i2c_hal(i2c);
     if (!rc)
         return;
     rc = enableReports();

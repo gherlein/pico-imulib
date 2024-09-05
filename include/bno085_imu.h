@@ -14,7 +14,7 @@ extern "C"
 #endif
 
     void run_bno085(i2c_inst_t *i2c);
-    bool init_i2c_hal(void);
+    bool init_i2c_hal(i2c_inst_t *i2c);
     bool enableReports(void);
     bool enableCalibration(void);
     bool hasReset(void);

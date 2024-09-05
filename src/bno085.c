@@ -30,15 +30,10 @@ i2c_inst_t *i2cX;
 sh2_Hal_t sh2_hal;
 sh2_ProductIds_t prodIds;
 
-// bno85(int sda, int scl, uint freq = 400 * 1000)
-void bno85(i2c_inst_t *i2c)
-{
-	i2cX = i2c;
-}
-
-bool init_i2c_hal(void)
+bool init_i2c_hal(i2c_inst_t *i2c)
 {
 	uint8_t dummy;
+	i2cX = i2c;
 	int rc = i2c_read_blocking(i2cX, BNO085_I2C_ADDR, &dummy, 1, false);
 
 	if (rc < 1)
